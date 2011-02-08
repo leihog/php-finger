@@ -1,0 +1,16 @@
+### php-finger ###
+
+Install
+-----------
+
+Make sure the file /etc/services contains the line
+finger          79/tcp
+
+Add the following line to /etc/inetd.conf
+finger stream tcp nowait nobody /usr/local/sbin/fingerd.php
+
+As root:
+#cp fingerd.php /usr/local/sbin/fingerd.php
+#chmod 655 /usr/local/sbin/fingerd.php
+#chown root:nobody /usr/local/sbin/fingerd.php
+
