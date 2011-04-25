@@ -1,16 +1,37 @@
 ### php-finger ###
 
+A simple php implementation of the finger protocol.
+Well part of it anyway. I wrote this to use it with Thimbl,
+so I only implemented the parts I needed for that.
+
 Install
 -----------
 
+#cp fingerd.php /usr/local/sbin/fingerd.php
+#chmod 655 /usr/local/sbin/fingerd.php
+#chown root:nobody /usr/local/sbin/fingerd.php
+
+-- inetd
 Make sure the file /etc/services contains the line
 finger          79/tcp
 
 Add the following line to /etc/inetd.conf
 finger stream tcp nowait nobody /usr/local/sbin/fingerd.php
 
-As root:
-#cp fingerd.php /usr/local/sbin/fingerd.php
-#chmod 655 /usr/local/sbin/fingerd.php
-#chown root:nobody /usr/local/sbin/fingerd.php
+-- xinitd
 
+Add the following to /etc/xinitd.d/finger
+service finger
+{
+    disable = no
+    flags = REUSE
+    socket_type = stream
+    protocol = tcp
+    wait = no
+    user = nobody
+    server = /usr/local/sbin/fingerd.php
+}
+
+and then as root run: (might differ depending on OS or dist)
+#chkconfig finger on
+#service xinetd restart
